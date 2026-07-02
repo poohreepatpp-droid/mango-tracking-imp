@@ -1,0 +1,44 @@
+# Visual Studio IDE files
+.vs/
+
+# .NET build output
+backend/bin/
+backend/obj/
+publish/
+
+# Nuxt
+.nuxt/
+.output/
+.data/
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Env files
+.env
+.env.local
+.env.*.local
+.env.docker
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Docker image exports
+*.tar
+
+# Vercel
+.vercel
+
+# Prisma generated
+generated/

@@ -1,0 +1,39 @@
+services:
+
+  # ── .NET 10 Backend ──────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount the folder that contains your .mglc keyfile
+      # Change the left side to the actual path on the server
+      - ${KEYFILE_DIR:-./keys}:/app/keys:ro
+      # Mount SQL update scripts (so you can add .sql files without rebuilding)
+      - ${SQL_UPDATE_DIR:-./backend/UpdateStructure}:/app/UpdateStructure
+    environment:
+      KEYFILE: /app/keys/${KEYFILE_NAME:-app.mglc}
+      NUXT_ORIGIN: ${NUXT_ORIGIN:-http://localhost:3000}
+      SESSION_HOURS: ${SESSION_HOURS:-8}
+    restart: unless-stopped
+
+  # ── Nuxt 3 Frontend ──────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # URL that the BROWSER uses to call the API
+        API_BASE_URL: ${API_BASE_URL:-http://localhost:5000}
+    ports:
+      - "3000:3000"
+    environment:
+      # Browser → backend (public host port)
+      NUXT_PUBLIC_API_BASE: ${API_BASE_URL:-http://localhost:5000}
+      # Nuxt SSR server → backend (internal Docker network)
+      NUXT_API_BASE_INTERNAL: http://backend:5000
+    depends_on:
+      - backend
+    restart: unless-stopped
