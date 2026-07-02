@@ -108,10 +108,10 @@ const fmtDate = (d: string) => new Date(d).toLocaleDateString('th-TH', { year: '
                 </td>
                 <td style="color:var(--text-2);">{{ e.position }}</td>
                 <td>
-                  <span class="badge badge-blue">{{ e.department.name }}</span>
+                  <span class="badge badge-blue">{{ e.department?.name ?? '—' }}</span>
                 </td>
                 <td class="td-num" style="text-align:right;">
-                  {{ e.salary.toLocaleString('th-TH') }}
+                  {{ e.salary?.toLocaleString('th-TH') ?? '—' }}
                 </td>
                 <td style="color:var(--text-2); font-size:12px;">{{ fmtDate(e.startDate) }}</td>
                 <td style="text-align:center;">
